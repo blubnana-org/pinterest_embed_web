@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:pinterest_embed_plugin/pinterest_embed_plugin.dart';
+import 'package:pinterest_embed_plugin_example/device_resolutions.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,46 +17,68 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-  final _pinterestEmbedPlugin = PinterestEmbedPlugin();
+  final _boardWidth = 1440;
+  final _scaleWidth = 200;
+  final _scaleHeight = 600;
+
+  final _boardWidthMobile = 400;
+  final _scaleWidthMobile = 80;
+  final _scaleHeightMobile = 1080;
+
+  final _boardWidthTablet = 900;
+  final _scaleWidthTablet = 80;
+  final _scaleHeightTablet = 600;
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion =
-          await _pinterestEmbedPlugin.getPlatformVersion() ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
+  Widget _displayMobile() {
+    return PinterestEmbedPlugin(
+      boardUrl:
+          'https://za.pinterest.com/botiqmagazine/b-o-t-i-q-n-a-i-l-i-n-s-p-o/',
+      boardWidth: _boardWidthMobile,
+      scaleHeight: _scaleHeightMobile,
+      scaleWidth: _scaleWidthMobile,
+    );
+  }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
+  Widget _displayTablet() {
+    return PinterestEmbedPlugin(
+      boardUrl:
+          'https://za.pinterest.com/botiqmagazine/b-o-t-i-q-n-a-i-l-i-n-s-p-o/',
+      boardWidth: _boardWidthTablet,
+      scaleHeight: _scaleHeightTablet,
+      scaleWidth: _scaleWidthTablet,
+    );
+  }
 
-    setState(() {
-      _platformVersion = platformVersion;
-    });
+  Widget _displayDesktop() {
+    return PinterestEmbedPlugin(
+      boardUrl:
+          'https://za.pinterest.com/botiqmagazine/b-o-t-i-q-n-a-i-l-i-n-s-p-o/',
+      boardWidth: _boardWidth,
+      scaleHeight: _scaleHeight,
+      scaleWidth: _scaleWidth,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        appBar: AppBar(title: const Text('Plugin example app')),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child:
+                AppDeviceResolution.isMobile(context)
+                    ? _displayMobile()
+                    : AppDeviceResolution.isTablet(context)
+                    ? _displayTablet()
+                    : _displayDesktop(),
+          ),
         ),
       ),
     );

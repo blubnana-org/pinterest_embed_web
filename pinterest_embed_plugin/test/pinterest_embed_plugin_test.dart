@@ -1,3 +1,4 @@
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pinterest_embed_plugin/pinterest_embed_plugin.dart';
 import 'package:pinterest_embed_plugin/pinterest_embed_plugin_platform_interface.dart';
@@ -10,6 +11,12 @@ class MockPinterestEmbedPluginPlatform
 
   @override
   Future<String?> getPlatformVersion() => Future.value('42');
+
+  @override
+  Widget buildPinterestEmbed({required BuildContext context, required String boardUrl, required int boardWidth, required int scaleHeight, required int scaleWidth}) {
+    // TODO: implement buildPinterestEmbed
+    throw UnimplementedError();
+  }
 }
 
 void main() {
@@ -19,11 +26,4 @@ void main() {
     expect(initialPlatform, isInstanceOf<MethodChannelPinterestEmbedPlugin>());
   });
 
-  test('getPlatformVersion', () async {
-    PinterestEmbedPlugin pinterestEmbedPlugin = PinterestEmbedPlugin();
-    MockPinterestEmbedPluginPlatform fakePlatform = MockPinterestEmbedPluginPlatform();
-    PinterestEmbedPluginPlatform.instance = fakePlatform;
-
-    expect(await pinterestEmbedPlugin.getPlatformVersion(), '42');
-  });
 }
