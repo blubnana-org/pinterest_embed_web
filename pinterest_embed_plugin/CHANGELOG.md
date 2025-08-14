@@ -1,3 +1,9 @@
-## 0.0.1
+## 1.0.0
+- Version bump
+- Documentation updates
+- Publish to pub dev
 
-* TODO: Describe initial release.
+## 0.0.1
+- Dev by @khomotsozwanedev in #1
+- Dev by @khomotsozwanedev in #2
+- adding readme 2 by @khomotsozwanedev in #3
