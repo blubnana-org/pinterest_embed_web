@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:pinterest_embed_plugin/pinterest_embed_plugin.dart';
 import 'package:pinterest_embed_plugin_example/device_resolutions.dart';
 
