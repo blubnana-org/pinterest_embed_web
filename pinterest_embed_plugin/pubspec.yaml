@@ -1,7 +1,7 @@
 name: pinterest_embed_plugin
 description: "A new Flutter plugin project."
 version: 0.0.1
-homepage:
+homepage: https://github.com/blubnana-org/pinterest_embed_web.git
 
 environment:
   sdk: ^3.7.2
