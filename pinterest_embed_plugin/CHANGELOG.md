@@ -1,3 +1,8 @@
+## 1.0.3
+- Version bump
+- More Fixes for non hydrating embeds
+- Update changelog by @khomotsozwanedev
+
 ## 1.0.2
 - Version bump
 - Fixes for non hydrating embeds
