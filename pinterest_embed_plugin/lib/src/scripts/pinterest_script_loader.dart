@@ -14,14 +14,22 @@ class PinterestScriptLoader {
       script.async = true;
       script.defer = true;
       script.src = _scriptSrc;
+
+      // When script finishes loading, hydrate embeds
+      script.onLoad.listen((_) {
+        try {
+          (web.window as dynamic).PinUtils?.build();
+        } catch (err) {
+          // swallow error safely
+        }
+      });
+
       (web.document.head ?? web.document.body ?? web.document).appendChild(script);
     } else {
-      // Pinterest global object is created by pinit.js
+      // If script is already present, just hydrate
       try {
         (web.window as dynamic).PinUtils?.build();
-      } catch (_) {
-        // Safe fallback — nothing breaks if Pinterest API changes
-      }
+      } catch (_) {}
     }
   }
 }

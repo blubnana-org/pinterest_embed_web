@@ -1,5 +1,10 @@
+## 1.0.2
+- Version bump
+- Fixes for non hydrating embeds
+- Update changelog by @khomotsozwanedev
+
 ## 1.0.1
-- Upddate version by @khomotsozwanedev
+- Update version by @khomotsozwanedev
 - Update readme by @khomotsozwanedev
 
 ## 1.0.0
