@@ -1,6 +1,6 @@
 name: pinterest_embed_plugin
 description: "A Flutter plugin for embedding Pinterest boards and profiles on the web. Seamlessly integrate a Pinterest-like user experience into your web application."
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/blubnana-org/pinterest_embed_web.git
 issue_tracker: https://github.com/blubnana-org/pinterest_embed_web/issues
 documentation: https://github.com/blubnana-org/pinterest_embed_web?tab=readme-ov-file#readme
