@@ -1,4 +1,4 @@
-## 1.0.3
+## 1.0.4
 - Version bump
 - Debug fixes for hydration issues
 - Update changelog by @khomotsozwanedev
