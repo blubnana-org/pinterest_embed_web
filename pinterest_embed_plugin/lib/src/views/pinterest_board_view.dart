@@ -53,6 +53,20 @@ class _PinterestBoardViewState extends State<PinterestBoardView> {
   }
 
   @override
+  void didUpdateWidget(covariant PinterestBoardView oldWidget) {
+    
+    super.didUpdateWidget(oldWidget);
+
+    // If props changed (like boardUrl, dimensions, etc.), rehydrate
+    if (oldWidget.boardUrl != widget.boardUrl ||
+        oldWidget.boardWidth != widget.boardWidth ||
+        oldWidget.scaleHeight != widget.scaleHeight ||
+        oldWidget.scaleWidth != widget.scaleWidth) {
+      PinterestScriptLoader.ensureScriptAndHydrate();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
