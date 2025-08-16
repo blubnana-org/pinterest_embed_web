@@ -42,11 +42,11 @@ Replace `'your-board-id'` with the actual ID of the Pinterest board you wish to 
 
 ## 🧪 Example
 
-For a complete example, refer to the [example directory](https://github.com/blubnana-org/pinterest_embed_web/tree/main/example).
+For a complete example, refer to the [example directory](https://github.com/blubnana-org/pinterest_embed_web/tree/main/pinterest_embed_plugin/example).
 
 ## 📄 License
 
-This package is licensed under the MIT License. See the [LICENSE](https://github.com/blubnana-org/pinterest_embed_web/blob/main/LICENSE) file for more details.
+This package is licensed under the MIT License. See the [LICENSE](https://github.com/blubnana-org/pinterest_embed_web/blob/main/pinterest_embed_plugin/LICENSE) file for more details.
 
 ## 🤝 Contributing
 
