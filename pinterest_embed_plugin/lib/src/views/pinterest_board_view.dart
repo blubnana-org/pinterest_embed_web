@@ -53,12 +53,14 @@ class _PinterestBoardViewState extends State<PinterestBoardView> {
       // Load Pinterest script
       PinterestScriptLoader.ensureScriptAndHydrate();
 
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => PinterestScriptLoader.ensureScriptAndHydrate(),
-      );
-
       return container;
     });
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => PinterestScriptLoader.ensureScriptAndHydrate(),
+    );
+
+    
   }
 
   @override
@@ -73,6 +75,7 @@ class _PinterestBoardViewState extends State<PinterestBoardView> {
       PinterestScriptLoader.ensureScriptAndHydrate();
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
