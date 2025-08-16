@@ -26,7 +26,6 @@ class _PinterestBoardViewState extends State<PinterestBoardView> {
 
   @override
   void initState() {
-    
     super.initState();
 
     _viewType = 'pinterest-board-view-${DateTime.now().microsecondsSinceEpoch}';
@@ -36,10 +35,17 @@ class _PinterestBoardViewState extends State<PinterestBoardView> {
       container.style.width = '100%';
       container.style.height = '100%';
 
+      container.style.display = 'flex';
+      container.style.justifyContent = 'center';
+      container.style.alignItems = 'center';
+
       final anchor = web.document.createElement('a') as web.HTMLAnchorElement;
       anchor.setAttribute('data-pin-do', 'embedBoard');
       anchor.setAttribute('data-pin-board-width', widget.boardWidth.toString());
-      anchor.setAttribute('data-pin-scale-height', widget.scaleHeight.toString());
+      anchor.setAttribute(
+        'data-pin-scale-height',
+        widget.scaleHeight.toString(),
+      );
       anchor.setAttribute('data-pin-scale-width', widget.scaleWidth.toString());
       anchor.href = widget.boardUrl;
       container.appendChild(anchor);
@@ -47,14 +53,16 @@ class _PinterestBoardViewState extends State<PinterestBoardView> {
       // Load Pinterest script
       PinterestScriptLoader.ensureScriptAndHydrate();
 
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => PinterestScriptLoader.ensureScriptAndHydrate(),
+      );
+
       return container;
     });
-
   }
 
   @override
   void didUpdateWidget(covariant PinterestBoardView oldWidget) {
-    
     super.didUpdateWidget(oldWidget);
 
     // If props changed (like boardUrl, dimensions, etc.), rehydrate

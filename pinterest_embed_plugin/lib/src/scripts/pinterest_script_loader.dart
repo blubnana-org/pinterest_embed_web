@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_web_libraries_in_flutter
+import 'package:flutter/widgets.dart';
 import 'package:web/web.dart' as web;
 
 class PinterestScriptLoader {
@@ -9,7 +10,8 @@ class PinterestScriptLoader {
     final existing = web.document.getElementById(_scriptId);
 
     if (existing == null) {
-      final script = web.document.createElement('script') as web.HTMLScriptElement;
+      final script =
+          web.document.createElement('script') as web.HTMLScriptElement;
       script.id = _scriptId;
       script.async = true;
       script.defer = true;
@@ -17,19 +19,28 @@ class PinterestScriptLoader {
 
       // When script finishes loading, hydrate embeds
       script.onLoad.listen((_) {
-        try {
-          (web.window as dynamic).PinUtils?.build();
-        } catch (err) {
-          // swallow error safely
-        }
+        _tryHydrate();
       });
 
-      (web.document.head ?? web.document.body ?? web.document).appendChild(script);
+      (web.document.head ?? web.document.body ?? web.document).appendChild(
+        script,
+      );
     } else {
       // If script is already present, just hydrate
-      try {
-        (web.window as dynamic).PinUtils?.build();
-      } catch (_) {}
+      _tryHydrate(); 
+    }
+  }
+
+  static void _tryHydrate({int attempts = 5}) {
+    if (attempts <= 0) return;
+
+    try {
+      (web.window as dynamic).PinUtils?.build();
+      debugPrint("[Pinterest] Hydration succeeded.");
+    } catch (_) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        _tryHydrate(attempts: attempts - 1);
+      });
     }
   }
 }

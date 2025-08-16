@@ -13,7 +13,7 @@ class PinterestEmbedPlugin extends StatelessWidget {
     required this.boardUrl,
     this.boardWidth = 1920,
     this.scaleHeight = 1080,
-    this.scaleWidth = 200,
+    this.scaleWidth = 80,
   });
 
   @override
