@@ -27,7 +27,7 @@ class PinterestScriptLoader {
       );
     } else {
       // If script is already present, just hydrate
-      _tryHydrate(); 
+      _tryHydrate();
     }
   }
 
@@ -37,7 +37,11 @@ class PinterestScriptLoader {
     try {
       (web.window as dynamic).PinUtils?.build();
       debugPrint("[Pinterest] Hydration succeeded.");
-    } catch (_) {
+      print("[Pinterest] Hydration succeeded. attempt $attempts");
+    } catch (err) {
+
+      print("[Pinterest] Hydration failed. attempt $attempts,\nErro: $err");
+
       Future.delayed(const Duration(milliseconds: 300), () {
         _tryHydrate(attempts: attempts - 1);
       });
