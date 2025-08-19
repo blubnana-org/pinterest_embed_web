@@ -1,5 +1,5 @@
-## 1.0.5
-- Version bump
+## 2.0.0
+- Major version changes
 - Debug fixes for hydration issues
 - Implement states for the widget
 - Update changelog by @khomotsozwanedev
