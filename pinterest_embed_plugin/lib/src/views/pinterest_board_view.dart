@@ -1,6 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'dart:ui_web' as ui;
 import 'package:pinterest_embed_plugin/src/scripts/pinterest_script_loader.dart';
+import 'package:pinterest_embed_plugin/src/utils/hydration_state.dart';
+import 'package:pinterest_embed_plugin/src/widgets/error_widget.dart';
+import 'package:pinterest_embed_plugin/src/widgets/loader_widget.dart';
 import 'package:web/web.dart' as web;
 
 class PinterestBoardView extends StatefulWidget {
@@ -23,6 +26,7 @@ class PinterestBoardView extends StatefulWidget {
 
 class _PinterestBoardViewState extends State<PinterestBoardView> {
   late final String _viewType;
+  HydrationState _hydrationState = HydrationState.loading;
 
   @override
   void initState() {
@@ -56,11 +60,17 @@ class _PinterestBoardViewState extends State<PinterestBoardView> {
       return container;
     });
 
+    PinterestScriptLoader.hydrationStream.listen((event) {
+      if (mounted) {
+        setState(() {
+          _hydrationState = event;
+        });
+      }
+    });
+
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => PinterestScriptLoader.ensureScriptAndHydrate(),
     );
-
-    
   }
 
   @override
@@ -76,12 +86,18 @@ class _PinterestBoardViewState extends State<PinterestBoardView> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: HtmlElementView(viewType: _viewType),
-    );
+    switch (_hydrationState) {
+      case HydrationState.loading:
+        return const LoaderWidget();
+      case HydrationState.success:
+        return SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: HtmlElementView(viewType: _viewType),
+        );
+      case HydrationState.error:
+        return const ErrorViewWidget();
+    }
   }
 }
