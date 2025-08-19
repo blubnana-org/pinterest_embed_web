@@ -66,15 +66,35 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('Plugin example app')),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child:
-                AppDeviceResolution.isMobile(context)
-                    ? _displayMobile()
-                    : AppDeviceResolution.isTablet(context)
-                    ? _displayTablet()
-                    : _displayDesktop(),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 1080,
+                child: Center(
+                  child:
+                      AppDeviceResolution.isMobile(context)
+                          ? _displayMobile()
+                          : AppDeviceResolution.isTablet(context)
+                          ? _displayTablet()
+                          : _displayDesktop(),
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              SizedBox(
+                height: 1080,
+                child: Center(
+                  child:
+                      AppDeviceResolution.isMobile(context)
+                          ? _displayMobile()
+                          : AppDeviceResolution.isTablet(context)
+                          ? _displayTablet()
+                          : _displayDesktop(),
+                ),
+              ),
+            ],
           ),
         ),
       ),
