@@ -5,6 +5,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:pinterest_embed_plugin/src/scripts/pinterest_script_loader.dart';
 import 'package:pinterest_embed_plugin/src/views/pinterest_board_view.dart';
 import 'package:web/web.dart' as web;
 
@@ -40,5 +41,15 @@ class PinterestEmbedPluginWeb extends PinterestEmbedPluginPlatform {
       scaleHeight: scaleHeight,
       scaleWidth: scaleWidth,
     );
+  }
+
+  @override
+  Future<HydrationState?> getStatus() async {
+    return PinterestScriptLoader.currentState;
+  }
+
+  @override
+  Future<void> hydrateWidget() async {
+    PinterestScriptLoader.makeHydrate(); 
   }
 }

@@ -9,13 +9,32 @@ class PinterestScriptLoader {
   static const String _scriptId = 'pinterest-pinit-js';
   static const String _scriptSrc = 'https://assets.pinterest.com/js/pinit.js';
 
+  PinterestScriptLoader._();
+
   static final StreamController<HydrationState> _controller =
       StreamController.broadcast();
 
   static Stream<HydrationState> get hydrationStream => _controller.stream;
 
+  static HydrationState? _currentState;
+  static HydrationState? currentState = _currentState;
+
+  static void _emit(HydrationState state) {
+    _currentState = state;
+
+    if (!_controller.isClosed) {
+      _controller.add(state);
+    }
+  }
+
   static void ensureScriptAndHydrate() {
+    print("ensureScriptAndHydrate() is being called now");
+
     final existing = web.document.getElementById(_scriptId);
+
+    if (_currentState != HydrationState.success) {
+      _emit(HydrationState.loading);
+    }
 
     if (existing == null) {
       final script =
@@ -27,7 +46,8 @@ class PinterestScriptLoader {
 
       // When script finishes loading, hydrate embeds
       script.onLoad.listen((_) {
-        _controller.add(HydrationState.loading);
+        _emit(HydrationState.loading);
+
         _tryHydrate();
       });
 
@@ -42,7 +62,7 @@ class PinterestScriptLoader {
 
   static void _tryHydrate({int attempts = 7, int delayMs = 400}) {
     if (attempts <= 0) {
-      _controller.add(HydrationState.error);
+      _emit(HydrationState.error);
       return;
     }
 
@@ -50,10 +70,10 @@ class PinterestScriptLoader {
       final pinUtils = getPinUtils();
 
       if (pinUtils != null) {
-        
         pinUtils.build();
 
-        _controller.add(HydrationState.success);
+        _emit(HydrationState.success);
+
         return;
       } else {
         throw Exception("PinUtils is not yet ready.");
@@ -63,9 +83,20 @@ class PinterestScriptLoader {
         "[Pinterest] Hydration failed. attempt $attempts,\nError: $err \nretry Delay $delayMs",
       );
 
-      Future.delayed(Duration(milliseconds: delayMs), () {
-        _tryHydrate(attempts: attempts - 1, delayMs: (delayMs * 1.5).toInt());
-      });
+      _scheduleNext(attempts, delayMs);
     }
+  }
+
+  static void makeHydrate() {
+    if (_currentState != HydrationState.success ||
+        _currentState != HydrationState.error) {
+      _tryHydrate(attempts: 1, delayMs: 0);
+    }
+  }
+
+  static void _scheduleNext(int attempts, int delayMs) {
+    Future.delayed(Duration(milliseconds: delayMs), () {
+      _tryHydrate(attempts: attempts - 1, delayMs: (delayMs * 1.5).toInt());
+    });
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pinterest_embed_plugin/pinterest_embed_plugin.dart';
+import 'package:pinterest_embed_plugin/pinterest_embed_plugin_platform_interface.dart';
 import 'package:pinterest_embed_plugin_example/device_resolutions.dart';
 
 void main() {
@@ -26,13 +27,17 @@ class _MyAppState extends State<MyApp> {
   final _scaleWidthTablet = 80;
   final _scaleHeightTablet = 600;
 
+  final Future<String?> _versionFuture = PinterestEmbedPlugin.getVersion();
+  final Future<HydrationState?> _statusFuture =
+      PinterestEmbedPlugin.getStatus();
+
   @override
   void initState() {
     super.initState();
   }
 
   Widget _displayMobile() {
-    return PinterestEmbedPlugin(
+    return PinterestEmbed(
       boardUrl:
           'https://za.pinterest.com/botiqmagazine/b-o-t-i-q-n-a-i-l-i-n-s-p-o/',
       boardWidth: _boardWidthMobile,
@@ -42,7 +47,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Widget _displayTablet() {
-    return PinterestEmbedPlugin(
+    return PinterestEmbed(
       boardUrl:
           'https://za.pinterest.com/botiqmagazine/b-o-t-i-q-n-a-i-l-i-n-s-p-o/',
       boardWidth: _boardWidthTablet,
@@ -52,7 +57,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Widget _displayDesktop() {
-    return PinterestEmbedPlugin(
+    return PinterestEmbed(
       boardUrl:
           'https://za.pinterest.com/botiqmagazine/b-o-t-i-q-n-a-i-l-i-n-s-p-o/',
       boardWidth: _boardWidth,
@@ -69,6 +74,48 @@ class _MyAppState extends State<MyApp> {
         body: SingleChildScrollView(
           child: Column(
             children: [
+              const SizedBox(height: 12),
+
+              SizedBox(
+                height: 32,
+                child: FutureBuilder(
+                  future: _versionFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      print("Error: ${snapshot.error}");
+                      return Text(
+                        'Something went wrong getting the version. ${snapshot.error}',
+                      );
+                    } else if (snapshot.hasData) {
+                      print("version: ${snapshot.data}");
+                      return Text('Version : v${snapshot.data}');
+                    }
+
+                    return CircularProgressIndicator();
+                  },
+                ),
+              ),
+
+              SizedBox(
+                height: 32,
+                child: FutureBuilder(
+                  future: _statusFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      print("Error: ${snapshot.error}");
+                      return Text(
+                        'Something went wrong getting the status. ${snapshot.error}',
+                      );
+                    } else if (snapshot.hasData) {
+                      print("Status: ${snapshot.data}");
+                      return Text('Status : v${snapshot.data}');
+                    }
+
+                    return CircularProgressIndicator();
+                  },
+                ),
+              ),
+
               SizedBox(
                 height: 1080,
                 child: Center(
@@ -82,18 +129,6 @@ class _MyAppState extends State<MyApp> {
               ),
 
               const SizedBox(height: 12),
-
-              SizedBox(
-                height: 1080,
-                child: Center(
-                  child:
-                      AppDeviceResolution.isMobile(context)
-                          ? _displayMobile()
-                          : AppDeviceResolution.isTablet(context)
-                          ? _displayTablet()
-                          : _displayDesktop(),
-                ),
-              ),
             ],
           ),
         ),

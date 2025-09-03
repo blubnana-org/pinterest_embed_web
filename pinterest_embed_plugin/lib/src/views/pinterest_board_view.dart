@@ -61,6 +61,8 @@ class _PinterestBoardViewState extends State<PinterestBoardView> {
     });
 
     PinterestScriptLoader.hydrationStream.listen((event) {
+      print("event $event");
+
       if (mounted) {
         setState(() {
           _hydrationState = event;
@@ -77,11 +79,14 @@ class _PinterestBoardViewState extends State<PinterestBoardView> {
   void didUpdateWidget(covariant PinterestBoardView oldWidget) {
     super.didUpdateWidget(oldWidget);
 
+    print("didUpdateWidget() was called now ");
+
     // If props changed (like boardUrl, dimensions, etc.), rehydrate
     if (oldWidget.boardUrl != widget.boardUrl ||
         oldWidget.boardWidth != widget.boardWidth ||
         oldWidget.scaleHeight != widget.scaleHeight ||
         oldWidget.scaleWidth != widget.scaleWidth) {
+      print("didUpdateWidget() oldWidget has changed now");
       PinterestScriptLoader.ensureScriptAndHydrate();
     }
   }

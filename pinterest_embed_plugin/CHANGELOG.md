@@ -1,3 +1,8 @@
+## 2.0.1
+- Version bump
+- Implement states for the widget
+- Update changelog by @khomotsozwanedev
+
 ## 2.0.0
 - Major version changes
 - Debug fixes for hydration issues

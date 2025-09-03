@@ -11,7 +11,23 @@ class MethodChannelPinterestEmbedPlugin extends PinterestEmbedPluginPlatform {
 
   @override
   Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
+    final version = await methodChannel.invokeMethod<String>(
+      'getPlatformVersion',
+    );
     return version;
   }
+
+  @override
+  Future<HydrationState?> getStatus() async {
+    final status = await methodChannel.invokeMethod<HydrationState>(
+      'getPinterestWidgetStatus',
+    );
+    return status;
+  }
+
+  @override
+  Future<void> hydrateWidget() async {
+    await methodChannel.invokeMethod<HydrationState>('hydrateWidget');
+  }
+
 }
